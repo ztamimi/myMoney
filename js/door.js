@@ -1,0 +1,1 @@
+document.write("<script src='js/lib/require.js' data-main='js/app'></script>");

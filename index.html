@@ -1,0 +1,62 @@
+ <!DOCTYPE html>
+<html>
+    <head>
+        <title>My Money</title>
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div data-role="header" data-position="fixed">
+            <h1>My Money</h1>
+            <p>Find currency/commodity value</p>
+        </div>
+         
+        <div data-role="content">
+            <form>
+                <table width="100%">
+                    <tr>
+                        <legend>Convert:</legend>
+                    </tr>
+                    <tr>
+                        <td width="50%"><input type="number" min=0 id="inputAmount" value="1"><td>
+                        <td width="50%">
+                            <select id="fromCurrency">
+                                <option value="" placeholder="true">currency</option>
+                            </select>
+                        </td>
+                    
+                    </tr>
+                </table>    
+                    
+                
+                
+                <table width="100%">
+                    <tr>
+                        <legend>To:</legend>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="toCurrency" data-inline="true">
+                                <option value="" placeholder="true">currency</option>
+                            </select>
+                        </td>
+                
+                        <td>
+                            <div id="outputAmount"></div>
+                            <div id="outputCurrency"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <input type="button" id="convertBtn" value="Convert">
+                 
+                
+            </form>
+        </div>
+         
+        <div data-role="footer">
+             
+        </div>
+        <script src="js/door.js"></script>
+    </body>
+</html>
