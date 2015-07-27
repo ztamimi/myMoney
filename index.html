@@ -3,24 +3,34 @@
     <head>
         <title>My Money</title>
         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="css/myMoney.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <div data-role="header" data-position="fixed">
             <h1>My Money</h1>
-            <p>Find currency/commodity value</p>
         </div>
          
         <div data-role="content">
+            <p id="timeStamp"></p>
             <form>
-                <table width="100%">
+                <table width="100%" class="">
                     <tr>
-                        <legend>Convert:</legend>
+                        <td width="10%">convert</td>
+                        <td width="90%">
+                            <select id="fromCurrency">
+                                <option value="" placeholder="true">currency</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td width="50%"><input type="number" min=0 id="inputAmount" value="1"><td>
-                        <td width="50%">
-                            <select id="fromCurrency">
+                        <td width="10%"></td>
+                        <td width="90%"><input type="number" min=0 id="inputAmount"><td>
+                    </tr>
+                    <tr>
+                        <td width="10%">to</td>
+                        <td width="90%">
+                            <select id="toCurrency">
                                 <option value="" placeholder="true">currency</option>
                             </select>
                         </td>
@@ -30,20 +40,14 @@
                     
                 
                 
-                <table width="100%">
+                <table width="100%" class="summery">
                     <tr>
-                        <legend>To:</legend>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select id="toCurrency" data-inline="true">
-                                <option value="" placeholder="true">currency</option>
-                            </select>
+                        <td width="45%">
+                            <div id="inputSummary"></div>
                         </td>
-                
-                        <td>
+                        <td width="10%" id="equals"></td>
+                        <td width="45%">
                             <div id="outputAmount"></div>
-                            <div id="outputCurrency"></div>
                         </td>
                     </tr>
                 </table>

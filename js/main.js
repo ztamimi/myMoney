@@ -1,8 +1,8 @@
-define(["lib/jquery", "lib/jquerymobile", "lib/money"], function(jquery, jquerymobile, fx) {
+define(["lib/jquery", "lib/jquerymobile", "lib/money", "lib/accounting"], function(jquery, jquerymobile, fx, accounting) {
     var main = {};
     
     main.init = function() {
-        $.mobile.loading('show'); 
+        $.mobile.loading('show');
 
         $.getJSON(
         'https://openexchangerates.org/api/latest.json?app_id=c84270aef7644692aa702b70465b2a6c',
@@ -18,13 +18,17 @@ define(["lib/jquery", "lib/jquerymobile", "lib/money"], function(jquery, jquerym
                     base : data.base
                 };
             }
+            //console.log(data.timestamp);
+            fx.timestamp = data.timestamp;
             main.loaded();
-        });
+        }).fail(function() {console.log("error");});
     };
     
     main.loaded = function() {
-        console.log("loaded");
         $.mobile.loading('hide');
+        //console.log(fx.timestamp);
+        var timeStamp = Date(fx.timestamp);
+        $("#timeStamp").text(timeStamp.toString());
         var fromList = $("#fromCurrency");
         var toList = $("#toCurrency");
 
@@ -45,6 +49,7 @@ define(["lib/jquery", "lib/jquerymobile", "lib/money"], function(jquery, jquerym
             toList.selectmenu("refresh");
         }
         $("#convertBtn").on('click', main.convert);
+        $("#inputAmount").val(1);
         main.convert();
     };
     
@@ -52,6 +57,7 @@ define(["lib/jquery", "lib/jquerymobile", "lib/money"], function(jquery, jquerym
         var amount = $("#inputAmount").val();
         if (!amount)
             return;
+        var input = accounting.unformat(amount);
         var fromCurrency = $("#fromCurrency").val();
         if (!fromCurrency)
             return;
@@ -61,22 +67,26 @@ define(["lib/jquery", "lib/jquerymobile", "lib/money"], function(jquery, jquerym
         if (!toCurrency)
             return;
         main.setCookie("toCurrency", toCurrency);
-        var exchange = fx.convert(amount, {from: fromCurrency, to: toCurrency});
-        $("#outputAmount").text(exchange);
-        $("#outputCurrency").text(toCurrency);
+        
+        var output = fx.convert(input, {from: fromCurrency, to: toCurrency});
+        var formatedOutput = accounting.formatMoney(output, {symbol: toCurrency, format: "%v %s"});
+        $("#outputAmount").text(formatedOutput);
+        var formatedInput = accounting.formatMoney(input, {symbol: fromCurrency, format: "%v %s"});
+        console.log(formatedInput);
+        $("#inputSummary").text(formatedInput);
+        $("#equals").text("equals")
     };
     
-    main.setCookie = function(key, value) {  
-        var expires = new Date();  
-        expires.setTime(expires.getTime() + 21600); //6 hours  
-        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();  
+    main.setCookie = function(key, value) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + 21600); //6 hours
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
     };
   
-    main.getCookie = function(key) {  
-        var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');  
-        return keyValue ? keyValue[2] : null;  
+    main.getCookie = function(key) {
+        var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+        return keyValue ? keyValue[2] : null;
     };
-    
     
     return main;
 });
